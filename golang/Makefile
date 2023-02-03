@@ -7,8 +7,8 @@
 
 include $(TOPDIR)/rules.mk
 
-GO_VERSION_MAJOR_MINOR:=1.19
-GO_VERSION_PATCH:=5
+GO_VERSION_MAJOR_MINOR:=1.20
+GO_VERSION_PATCH:=
 
 PKG_NAME:=golang
 PKG_VERSION:=$(GO_VERSION_MAJOR_MINOR)$(if $(GO_VERSION_PATCH),.$(GO_VERSION_PATCH))
@@ -20,7 +20,7 @@ GO_SOURCE_URLS:=https://dl.google.com/go/ \
 
 PKG_SOURCE:=go$(PKG_VERSION).src.tar.gz
 PKG_SOURCE_URL:=$(GO_SOURCE_URLS)
-PKG_HASH:=8e486e8e85a281fc5ce3f0bedc5b9d2dbf6276d7db0b25d3ec034f313da0375f
+PKG_HASH:=3a29ff0421beaf6329292b8a46311c9fbf06c800077ceddef5fb7f8d5b1ace33
 
 PKG_MAINTAINER:=Jeffery To <jeffery.to@gmail.com>
 PKG_LICENSE:=BSD-3-Clause
@@ -69,9 +69,13 @@ HOST_GO_VALID_OS_ARCH:= \
   \
   openbsd_mips64
 
-BOOTSTRAP_SOURCE:=go1.4-bootstrap-20171003.tar.gz
+ifeq ($(HOST_ARCH),x86_64)
+	PKG_ARCH:=amd64
+endif
+
+BOOTSTRAP_SOURCE:=go1.17.3.linux-$(PKG_ARCH).tar.gz
 BOOTSTRAP_SOURCE_URL:=$(GO_SOURCE_URLS)
-BOOTSTRAP_HASH:=f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52
+BOOTSTRAP_HASH:=skip
 
 BOOTSTRAP_BUILD_DIR:=$(HOST_BUILD_DIR)/.go_bootstrap
 
@@ -212,10 +216,6 @@ define Host/Compile
 	$(call GoCompiler/Host/CheckHost,$(HOST_GO_VALID_OS_ARCH))
 
 	mkdir -p "$(GO_BUILD_CACHE_DIR)"
-
-	$(call GoCompiler/Bootstrap/Make, \
-		$(HOST_GO_VARS) \
-	)
 
 	$(call GoCompiler/Host/Make, \
 		GOROOT_BOOTSTRAP="$(BOOTSTRAP_ROOT_DIR)" \
