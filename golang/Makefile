@@ -58,6 +58,7 @@ HOST_GO_VALID_OS_ARCH:= \
   \
   dragonfly_amd64 \
   illumos_amd64 \
+  freebsd_riscv64 \
   solaris_amd64 \
   \
   aix_ppc64 \
@@ -66,16 +67,23 @@ HOST_GO_VALID_OS_ARCH:= \
   linux_ppc64 linux_ppc64le \
   linux_mips linux_mipsle linux_mips64 linux_mips64le \
   linux_riscv64 linux_s390x \
+  linux_loong64 \
   \
   openbsd_mips64
 
 ifeq ($(HOST_ARCH),x86_64)
 	PKG_ARCH:=amd64
+	SHA256:=550f9845451c0c94be679faf116291e7807a8d78b43149f9506c1b15eb89008c
+endif
+
+ifeq ($(HOST_ARCH),aarch64)
+	PKG_ARCH:=arm64
+	SHA256:=06f505c8d27203f78706ad04e47050b49092f1b06dc9ac4fbee4f0e4d015c8d4
 endif
 
 BOOTSTRAP_SOURCE:=go1.17.3.linux-$(PKG_ARCH).tar.gz
 BOOTSTRAP_SOURCE_URL:=$(GO_SOURCE_URLS)
-BOOTSTRAP_HASH:=skip
+BOOTSTRAP_HASH:=$(SHA256)
 
 BOOTSTRAP_BUILD_DIR:=$(HOST_BUILD_DIR)/.go_bootstrap
 
