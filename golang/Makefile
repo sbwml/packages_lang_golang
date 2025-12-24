@@ -7,8 +7,8 @@
 
 include $(TOPDIR)/rules.mk
 
-GO_VERSION_MAJOR_MINOR:=1.25
-GO_VERSION_PATCH:=5
+GO_VERSION_MAJOR_MINOR:=1.26rc1
+GO_VERSION_PATCH:=
 
 PKG_NAME:=golang
 PKG_VERSION:=$(GO_VERSION_MAJOR_MINOR)$(if $(GO_VERSION_PATCH),.$(GO_VERSION_PATCH))
@@ -20,7 +20,7 @@ GO_SOURCE_URLS:=https://dl.google.com/go/ \
 
 PKG_SOURCE:=go$(PKG_VERSION).src.tar.gz
 PKG_SOURCE_URL:=$(GO_SOURCE_URLS)
-PKG_HASH:=22a5fd0a91efcd28a1b0537106b9959b2804b61f59c3758b51e8e5429c1a954f
+PKG_HASH:=65e3340506f4ba125a5799ecc787ad49d4c9f4d257e2c2c15d3e295e5002b684
 
 PKG_MAINTAINER:=Jeffery To <jeffery.to@gmail.com>
 PKG_LICENSE:=BSD-3-Clause
@@ -48,7 +48,7 @@ HOST_GO_VALID_OS_ARCH:= \
   linux_386    linux_amd64    linux_arm    linux_arm64 \
   openbsd_386  openbsd_amd64  openbsd_arm  openbsd_arm64 \
   netbsd_386   netbsd_amd64   netbsd_arm   netbsd_arm64 \
-  windows_386  windows_amd64  windows_arm  windows_arm64 \
+  windows_386  windows_amd64  windows_arm64 \
   \
   plan9_386    plan9_amd64    plan9_arm \
   \
@@ -63,26 +63,24 @@ HOST_GO_VALID_OS_ARCH:= \
   js_wasm \
   wasip1_wasm \
   \
-  freebsd_riscv64 \
-  openbsd_riscv64 \
-  \
   linux_ppc64 linux_ppc64le \
   linux_mips linux_mipsle linux_mips64 linux_mips64le \
   linux_loong64 linux_riscv64 linux_s390x \
   \
-  openbsd_mips64
+  netbsd_ppc64 \
+  openbsd_ppc64 openbsd_riscv64
 
 ifeq ($(HOST_ARCH),x86_64)
 	PKG_ARCH:=amd64
-	BOOTSTRAP_HASH:=999805bed7d9039ec3da1a53bfbcafc13e367da52aa823cb60b68ba22d44c616
+	BOOTSTRAP_HASH:=bbca37cc395c974ffa4893ee35819ad23ebb27426df87af92e93a9ec66ef8712
 endif
 
 ifeq ($(HOST_ARCH),aarch64)
 	PKG_ARCH:=arm64
-	BOOTSTRAP_HASH:=c15fa895341b8eaf7f219fada25c36a610eb042985dc1a912410c1c90098eaf2
+	BOOTSTRAP_HASH:=124ea6033a8bf98aa9fbab53e58d134905262d45a022af3a90b73320f3c3afd5
 endif
 
-BOOTSTRAP_SOURCE:=go1.22.6.linux-$(PKG_ARCH).tar.gz
+BOOTSTRAP_SOURCE:=go1.24.6.linux-$(PKG_ARCH).tar.gz
 BOOTSTRAP_SOURCE_URL:=$(GO_SOURCE_URLS)
 
 BOOTSTRAP_BUILD_DIR:=$(HOST_BUILD_DIR)/.go_bootstrap
